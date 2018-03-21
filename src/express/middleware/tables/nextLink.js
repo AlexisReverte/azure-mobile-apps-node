@@ -34,11 +34,11 @@ var nextLink = module.exports = function (table) {
 nextLink.createLinkHeader = function (req, take, skip) {
     var urlObj = {
         protocol: req.protocol,
-        hostname: req.hostname,
-        pathname: req.path,
+        host: req.get('host'),
+        pathname: req.baseUrl + req.path,
+        port: req.port,
         query: assign(req.query, { $top: take, $skip: skip })
     };
-
     var formattedUrl = formatUrl(urlObj);
 
     return formattedUrl + '; rel=next';

@@ -14,8 +14,8 @@ describe('azure-mobile-apps.express.middleware.nextLink', function () {
             azureMobile: { query: queries.create('table').take(2) }
         };
         res = {
-            results: [ 1, 2 ],
-            headers: { },
+            results: [1, 2],
+            headers: {},
             set: function (key, value) {
                 this.headers[key] = value;
             }
@@ -50,7 +50,7 @@ describe('azure-mobile-apps.express.middleware.nextLink', function () {
     });
 
     it('creates link if results object contains total count', function () {
-        req.azureMobile.results = { results: [ 1, 2], count: 2 };
+        req.azureMobile.results = { results: [1, 2], count: 2 };
         nextLink(req, res, function () {
             expect(res.headers.Link).to.equal('http://host.com/tables/table?%24top=1&%24skip=2; rel=next');
         });
@@ -78,7 +78,16 @@ describe('azure-mobile-apps.express.middleware.nextLink', function () {
             var req = {
                 protocol: 'https',
                 hostname: 'host.net',
-                path: 'tables/table',
+                path: '',
+                baseUrl: '/tables/table',
+                get: function (value) {
+                    var res = '';
+                    if (value === 'host') {
+                        res = 'host.net';
+                    }
+
+                    return res;
+                },
                 query: {
                     "zumo-api-version": '2.0.0',
                     $filter: 'filters',

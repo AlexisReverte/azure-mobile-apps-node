@@ -36,7 +36,6 @@ nextLink.createLinkHeader = function (req, take, skip) {
         protocol: req.protocol,
         host: req.get('host'),
         pathname: req.baseUrl + req.path,
-        port: req.port,
         query: assign(req.query, { $top: take, $skip: skip })
     };
     var formattedUrl = formatUrl(urlObj);
